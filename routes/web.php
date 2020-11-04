@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::any('/info',function(){
+     phpinfo();
+});
+
+Route::any('/test1',"TestController@test1");
