@@ -20,3 +20,4 @@ Route::any('/info',function(){
 });
 
 Route::any('/test1',"TestController@test1");
+Route::any('/test2',"TestController@test2");
