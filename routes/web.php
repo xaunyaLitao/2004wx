@@ -19,5 +19,4 @@ Route::any('/info',function(){
      phpinfo();
 });
 
-Route::any('/test1',"TestController@test1");
-Route::any('/test2',"TestController@test2");
+Route::any('/weixin',"TestController@test1");
