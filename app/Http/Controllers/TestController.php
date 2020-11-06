@@ -85,7 +85,7 @@ class TestController extends Controller
 //            file_put_contents('wx_event.log',$xml_str);
             Log::info($xml_str);
             $pos=simplexml_load_string($xml_str);
-            $Content="";
+            $Content="感谢关注";
         }
         $info=$this->info($pos,$Content);
     }
