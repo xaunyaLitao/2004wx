@@ -35,7 +35,8 @@ class TestController extends Controller
     }
 
 
-    public function text(){
+//   获取access_token
+    public function getAccessToken(){
         $grant_type="client_credential";
         $appid="wxc8e73af28fb246ce";
         $secret="e3b11750e1de175e6f94cde4ebdfed72";
