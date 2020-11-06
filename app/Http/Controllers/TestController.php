@@ -86,6 +86,8 @@ class TestController extends Controller
             Log::info($xml_str);
             $pos=simplexml_load_string($xml_str);
             $Content="感谢关注";
+        }else if(!$tmpStr == $signature){
+            $Content="欢迎你的下次关注";
         }
         $info=$this->info($pos,$Content);
     }
