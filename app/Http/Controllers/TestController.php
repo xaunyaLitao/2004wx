@@ -18,7 +18,7 @@ class TestController extends Controller
         }
     }
 
-    private function checkSignature()
+    public function checkSignature()
     {
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
@@ -39,7 +39,7 @@ class TestController extends Controller
 
 
 
-    private function wxEvent()
+    public function wxEvent()
     {
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
