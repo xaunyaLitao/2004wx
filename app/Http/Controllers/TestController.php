@@ -38,32 +38,6 @@ class TestController extends Controller
     }
 
 
-
-    public function wxEvent()
-    {
-        $signature = $_GET["signature"];
-        $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];
-
-        $token ="Li";
-        $tmpArr = array($token, $timestamp, $nonce);
-        sort($tmpArr, SORT_STRING);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
-
-        if( $tmpStr == $signature ){  //验证通过
-            $xml_str=file_get_contents("php://input");
-            file_put_contents('wx_event.log',$xml_str);
-            echo "";
-            die;
-        }else{
-           echo "";
-        }
-    }
-
-
-
-
 //   获取access_token
     public function getAccessToken(){
         $key="1234";
@@ -91,4 +65,46 @@ class TestController extends Controller
         echo $response;
     }
 
+
+
+//    微信关注和取消关注
+    public function wxEvent()
+    {
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+
+        $token ="Li";
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature ){  //验证通过
+            $xml_str=file_get_contents("php://input");
+//            file_put_contents('wx_event.log',$xml_str);
+            Log::info($xml_str);
+            $pos=simplexml_load_string($xml_str);
+            $Content="";
+        }
+        $info=$this->info($pos,$Content);
+    }
+
+    public function info($pos,$Content){
+        $ToUserName=$pos->FromUserName;
+        $FromUserName=$pos->ToUserName;
+        $CreateTime=time();
+        $MsgType="text";
+        $xml="
+        <xml>
+  <ToUserName><![CDATA[%s]]></ToUserName>
+  <FromUserName><![CDATA[%s]]></FromUserName>
+  <CreateTime>%s</CreateTime>
+  <MsgType><![CDATA[%s]]></MsgType>
+  <Content><![CDATA[%s]]></Content>
+</xml>";
+        $info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
+        Log::info($info);
+        echo $info;
+    }
 }
