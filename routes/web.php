@@ -20,4 +20,4 @@ Route::any('/info',function(){
 });
 
 Route::any('/weixin',"TestController@test1");  //微信接入
-Route::any('/toekn',"TestController@getAccessToken");
+Route::any('/token',"TestController@getAccessToken");
