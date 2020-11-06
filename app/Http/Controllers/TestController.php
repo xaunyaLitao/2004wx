@@ -8,10 +8,8 @@ use Illuminate\Support\Facades\Redis;
 class TestController extends Controller
 {
     public function test1(){
-
         $echostr = request()->get("echostr", "");
         if ($this->checkSignature() && !empty($echostr)) {
-
             //第一次接入
             echo $echostr;
         }
