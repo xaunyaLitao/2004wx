@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Log;
 use Illuminate\Support\Facades\Redis;
 class TestController extends Controller
 {
@@ -13,7 +14,7 @@ class TestController extends Controller
             //第一次接入
             echo $echostr;
         }else{
-//            file_put_contents("php://input");
+
         }
     }
 
@@ -51,7 +52,8 @@ class TestController extends Controller
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){  //验证通过
-
+            $res=file_put_contents("php://input");
+            Log::info($res);
         }else{
            echo "";
         }
