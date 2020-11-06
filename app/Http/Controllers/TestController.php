@@ -12,6 +12,8 @@ class TestController extends Controller
         if ($this->checkSignature() && !empty($echostr)) {
             //第一次接入
             echo $echostr;
+        }else{
+//            file_put_contents("php://input");
         }
     }
 
@@ -28,11 +30,34 @@ class TestController extends Controller
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){
-            return true;
+            echo $_GET['echostr'];
         }else{
-            return false;
+           echo "111";
         }
     }
+
+
+
+    private function wxEvent()
+    {
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+
+        $token ="Li";
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature ){  //验证通过
+
+        }else{
+           echo "";
+        }
+    }
+
+
 
 
 //   获取access_token
@@ -54,8 +79,8 @@ class TestController extends Controller
             ];
             $response = file_get_contents($url, false, stream_context_create($arrContextOptions));
 
-            $response=json_decode($response,true);
-            $response=$response['access_token'];
+            $tao=json_decode($response,true);
+            $response=$tao['access_token'];
             Redis::set($key,$response);
             Redis::expire($key,3600);
         }

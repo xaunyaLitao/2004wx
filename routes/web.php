@@ -19,5 +19,5 @@ Route::any('/info',function(){
      phpinfo();
 });
 
-Route::any('/weixin',"TestController@test1");  //微信接入
+Route::any('/weixin',"TestController@wxEvent");  //接收事件推送
 Route::any('/token',"TestController@getAccessToken");
