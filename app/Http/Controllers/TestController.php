@@ -36,9 +36,10 @@ class TestController extends Controller
 
 
     public function text(){
+        $grant_type="client_credential";
         $appid="wxc8e73af28fb246ce";
         $secret="e3b11750e1de175e6f94cde4ebdfed72";
-        $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=.$appid.&secret=".$secret;
+        $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=".$grant_type."&appid=".$appid."&secret=".$secret;
         $url=file_get_contents($url);
         return $url;
     }
