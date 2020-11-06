@@ -18,7 +18,7 @@ class TestController extends Controller
         }
     }
 
-    public function checkSignature()
+    private function checkSignature()
     {
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
