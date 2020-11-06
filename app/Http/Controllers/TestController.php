@@ -52,8 +52,10 @@ class TestController extends Controller
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){  //验证通过
-            $res=file_put_contents("php://input");
-            Log::info($res);
+            $xml_str=file_put_contents("php://input");
+            file_put_contents('wx_event.log',$xml_str);
+            echo "";
+            die;
         }else{
            echo "";
         }
