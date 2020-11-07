@@ -42,10 +42,11 @@ class TestController extends Controller
                                 }
                         }
                     }
+                    echo $this->xiaoxi($obj,$content);
+
                     break;
 
             }
-            echo $this->xiaoxi($obj,$content);
         }
     }
 
