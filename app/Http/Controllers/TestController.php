@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Log;
 use Illuminate\Support\Facades\Redis;
-use app\Model\UserModel;
+use App\Model\UserModel;
 class TestController extends Controller
 {
     public function test1()
