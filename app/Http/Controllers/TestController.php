@@ -20,8 +20,7 @@ class TestController extends Controller
             // $obj=json_decode($obj, true);
             // file_put_contents("aaa.txt",$obj);
             // echo "ok";
-            switch ($obj->MsgType) {
-                case 'event':
+            
                     if($obj->Event=="subscribe"){
                         //用户扫码的 openID
                         $openid=$obj->FromUserName;//获取发送方的 openid
@@ -43,11 +42,6 @@ class TestController extends Controller
                             echo $this->xiaoxi($obj,$content);
                         }
                     }
-
-
-                    break;
-
-            }
         }
     }
 
