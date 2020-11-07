@@ -44,7 +44,7 @@ class TestController extends Controller
                         $content = "欢迎您再次关注！";
                     } else {
                         $data = [
-                            "subscribe" =>1,
+                            "subscribe" => $user['subscribe'],
                             "openid" => $user["openid"],
                             "nickname" => $user["nickname"],
                             "sex" => $user["sex"],
@@ -56,7 +56,7 @@ class TestController extends Controller
                             "subscribe_time" => $user["subscribe_time"],
                             "subscribe_scene" => $user["subscribe_scene"]
                         ];
-                        UserModel::create($data);
+                        UserModel::create($user);
                         $content = "欢迎关注";
                     }
                 }
