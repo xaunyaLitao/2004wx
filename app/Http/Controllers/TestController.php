@@ -44,7 +44,7 @@ class TestController extends Controller
                         $content = "欢迎您再次关注！";
                     } else {
                         $data = [
-                            "subscribe" => $user['subscribe'],
+                            "subscribe" =>1,
                             "openid" => $user["openid"],
                             "nickname" => $user["nickname"],
                             "sex" => $user["sex"],
