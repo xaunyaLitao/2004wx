@@ -6,42 +6,69 @@ use Illuminate\Http\Request;
 use DB;
 use Log;
 use Illuminate\Support\Facades\Redis;
+use app\Model\UserModel;
 class TestController extends Controller
 {
-    public function test1(){
+    public function test1()
+    {
         $echostr = request()->get("echostr", "");
         if ($this->checkSignature() && !empty($echostr)) {
             //第一次接入
             echo $echostr;
-        }else{
+        } else {
             // $access_token=$this->get_access_token();  //跳方法  调 access_token  获取access_token
-            $str=file_get_contents("php://input");
-            $obj = simplexml_load_string($str,"SimpleXMLElement",LIBXML_NOCDATA);
+            $str = file_get_contents("php://input");
+            $obj = simplexml_load_string($str, "SimpleXMLElement", LIBXML_NOCDATA);
             // $obj=json_decode($obj, true);
             // file_put_contents("aaa.txt",$obj);
             // echo "ok";
 
-                    if($obj->Event=="subscribe"){
-                        //用户扫码的 openID
-                        $openid=$obj->FromUserName;//获取发送方的 openid
-                        $access_token=$this->get_access_token();//获取token,
-                        $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
-                        //掉接口
-                        $user=json_decode($this->http_get($url),true);//跳方法 用get  方式调第三方类库
-                        // $this->writeLog($fens);
-                        if(isset($user["errcode"])){
-                            $this->writeLog("获取用户信息失败");
-                        }else{
-                            //说明查找成功 //可以加入数据库
-                                if(!Redis::get($openid)){
-                                    Redis::set($openid,'111');
-                                    $content="您好!感谢您的关注";
-                                }else{
-                                 $content="感谢您的再次关注";
-                                }
-                            echo $this->xiaoxi($obj,$content);
-                        }
+            if ($obj->Event == "subscribe") {
+                //用户扫码的 openID
+                $openid = $obj->FromUserName;//获取发送方的 openid
+                $access_token = $this->get_access_token();//获取token,
+                $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" . $access_token . "&openid=" . $openid . "&lang=zh_CN";
+                //掉接口
+                $user = json_decode($this->http_get($url), true);//跳方法 用get  方式调第三方类库
+                // $this->writeLog($fens);
+                if (isset($user["errcode"])) {
+                    $this->writeLog("获取用户信息失败");
+                } else {
+                    //说明查找成功 //可以加入数据库
+                    $res = UserModel::where("openid", $openid)->first();//查看用户表中是否有该用户,查看用户是否关注过
+                    if ($res) {//说明该用户关注过
+                        $openid = $obj->FromUserName;
+                        $res = UserModel::where("openid", $openid)->first();
+                        $res->subscribe = 1;
+                        $res->save();
+                        $content = "欢迎您再次关注！";
+                    } else {
+                        $data = [
+                            "subscribe" => $user['subscribe'],
+                            "openid" => $user["openid"],
+                            "nickname" => $user["nickname"],
+                            "sex" => $user["sex"],
+                            "city" => $user["city"],
+                            "country" => $user["country"],
+                            "province" => $user["province"],
+                            "language" => $user["language"],
+                            "headimgurl" => $user["headimgurl"],
+                            "subscribe_time" => $user["subscribe_time"],
+                            "subscribe_scene" => $user["subscribe_scene"]
+                        ];
+                        UserModel::create($data);
+                        $content = "欢迎关注";
                     }
+                }
+            }
+            // 取消关注
+            if ($obj->Event == "unsubscribe") {
+                $openid = $obj->FromUserName;
+                $res = UserModel::where("openid", $openid)->first();
+                $res->subscribe = 0;
+                $res->save();
+            }
+            echo $this->xiaoxi($obj,$content);
         }
     }
 
