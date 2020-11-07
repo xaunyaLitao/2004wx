@@ -40,9 +40,10 @@ class TestController extends Controller
                                 }else{
                                  $content="感谢您的再次关注";
                                 }
+                            echo $this->xiaoxi($obj,$content);
                         }
                     }
-                    echo $this->xiaoxi($obj,$content);
+
 
                     break;
 
