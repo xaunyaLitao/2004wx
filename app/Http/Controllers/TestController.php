@@ -20,7 +20,7 @@ class TestController extends Controller
             // $obj=json_decode($obj, true);
             // file_put_contents("aaa.txt",$obj);
             // echo "ok";
-            
+
                     if($obj->Event=="subscribe"){
                         //用户扫码的 openID
                         $openid=$obj->FromUserName;//获取发送方的 openid
@@ -58,7 +58,7 @@ class TestController extends Controller
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){
-            echo $_GET['echostr'];
+            return true;
         }else{
            echo "111";
         }
