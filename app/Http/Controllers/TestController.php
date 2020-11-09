@@ -66,6 +66,7 @@ class TestController extends Controller
                             }
                         }
                     }
+                // 取消关注
                 if($obj->Event=="unsubscribe"){
                     $user_id->subscribe=0;
                     $user_id->save();
@@ -124,52 +125,6 @@ class TestController extends Controller
 
 
 
-////    微信关注和取消关注
-//    public function wxEvent()
-//    {
-//        $signature = $_GET["signature"];
-//        $timestamp = $_GET["timestamp"];
-//        $nonce = $_GET["nonce"];
-//
-//        $token ="Li";
-//        $tmpArr = array($token, $timestamp, $nonce);
-//        sort($tmpArr, SORT_STRING);
-//        $tmpStr = implode( $tmpArr );
-//        $tmpStr = sha1( $tmpStr );
-//
-//        if( $tmpStr == $signature ){  //验证通过
-//            $xml_str=file_get_contents("php://input");
-////            file_put_contents('wx_event.log',$xml_str);
-//            Log::info($xml_str);
-//            $pos=simplexml_load_string($xml_str);
-//            $Content="感谢关注";
-//        }
-//        $info=$this->info($pos,$Content);
-//    }
-
-
-//    public function info($pos,$Content){
-//        $ToUserName=$pos->FromUserName;
-//        $FromUserName=$pos->ToUserName;
-//        $CreateTime=time();
-//        $MsgType="text";
-//        $xml="
-//        <xml>
-//  <ToUserName><![CDATA[%s]]></ToUserName>
-//  <FromUserName><![CDATA[%s]]></FromUserName>
-//  <CreateTime>%s</CreateTime>
-//  <MsgType><![CDATA[%s]]></MsgType>
-//  <Content><![CDATA[%s]]></Content>
-//</xml>";
-//        $info=sprintf($xml,$ToUserName,$FromUserName,$CreateTime,$MsgType,$Content);
-//        Log::info($info);
-//        echo $info;
-//    }
-
-
-
-
-
 
     function xiaoxi($obj,$content){ //返回消息
         //我们可以恢复一个文本|图片|视图|音乐|图文列如文本
@@ -196,6 +151,7 @@ class TestController extends Controller
 
 
 
+// 测试2
     public function test2(){
         echo '<pre>';print_r($_POST);echo '</pre>';
 
