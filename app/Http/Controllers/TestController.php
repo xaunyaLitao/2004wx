@@ -7,7 +7,7 @@ use DB;
 use Log;
 use Illuminate\Support\Facades\Redis;
 use App\Model\UserModel;
-use Facade\FlareClient\Http\Client;
+use GuzzleHttp\Client;
 class TestController extends Controller
 {
     public function test1(){
@@ -74,9 +74,31 @@ class TestController extends Controller
                 }
 
             //  天气
-            $url="";
-
-
+            $city=urlencode(str_replace("天气:","",$obj->Content));   //城市
+            $key="50ad65400349c7a71553ab6b23b92acb";  //key
+            $url="http://apis.juhe.cn/simpleWeather/query?city=".$city."&key=".$key;  //url地址
+            $shuju=file_get_contents($url);
+            $shuju=json_decode($shuju,true);
+            if($shuju["error_code"]==0){
+                $today=$shuju["result"]["realtime"];  //
+                $content="查询天气的城市:".$shuju["result"]["city"]."当天天气"."/n";  //查询的城市
+                $content.="天气详细情况：".$today["info"];
+                $content.="温度：".$today["temperature"]."\n";
+                $content.="湿度：".$today["humidity"]."\n";
+                $content.="风向：".$today["direct"]."\n";
+                $content.="风力：".$today["power"]."\n";
+                $content.="空气质量指数：".$today["aqi"]."\n";
+                //获取一个星期的
+                $future=$shuju["result"]["future"];
+                foreach($future as $k=>$v){
+                    $content.="日期:".date("Y-m-d",strtotime($v["date"])).$v['temperature'].",";
+                    $content.="天气:".$v['weather']."\n";
+                }
+                echo $this->text($obj,$content);
+            }else{
+                $content="你的查询天气失败，你的格式是天气:城市,这个城市不属于中国";
+            }
+            
             echo $this->xiaoxi($obj,$content);
         }
     }
@@ -120,12 +142,19 @@ class TestController extends Controller
             ];
             $response = file_get_contents($url, false, stream_context_create($arrContextOptions));
 
-            $tao=json_decode($response,true);
+            //        使用guzzl发起get请求
+            $client= new Client();    // 实例化 客户端
+
+            $response=$client->request('GET',$url,['verify'=>false]);  // 发起请求并接受响应
+            $json_str = $response->getBody();  //服务器的响应数据
+
+
+            $tao=json_decode($json_str,true);
             $response=$tao['access_token'];
             Redis::set($key,$response);
             Redis::expire($key,3600);
         }
-        echo $response;
+        return $response;
     }
 
 
@@ -163,5 +192,37 @@ class TestController extends Controller
         $data=file_get_contents("php://input");
         echo $data;
     }
-    
+
+
+    public function guzzle1(){
+        $appid="wxc8e73af28fb246ce";
+        $secret="e3b11750e1de175e6f94cde4ebdfed72";
+        $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$appid."&secret=".$secret;
+//        使用guzzl发起get请求
+        $client= new Client();    // 实例化 客户端
+
+        $response=$client->request('GET',$url,['verify'=>false]);  // 发起请求并接受响应
+       $json_str = $response->getBody();  //服务器的响应数据
+        echo $json_str;
+    }
+
+//    上传素材
+    public function guzzle2(){
+        $access_token=$this->getAccessToken();
+        $type="image";
+        $url="https://api.weixin.qq.com/cgi-bin/media/upload?access_token=".$access_token."&type=".$type;
+//        使用guzzle发送get请求
+        $client= new Client();   //实例化 客户端
+        $response=$client->request("POST",$url,[
+            'verify'=>false,
+            'multipart'=> [
+                [
+                    'name'=>'media',
+                    'contents'=>fopen('8_03.jpg','r')
+                ],
+            ]
+        ]);
+        $data=$response->getBody();
+        echo $data;
+    }
 }
