@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Log;
 use Illuminate\Support\Facades\Redis;
+use App\Model\UserModel;
 class TestController extends Controller
 {
     public function test1(){
@@ -33,12 +34,37 @@ class TestController extends Controller
                             $this->writeLog("获取用户信息失败");
                         }else{
                             //说明查找成功 //可以加入数据库
-                                if(!Redis::get($openid)){
-                                    Redis::set($openid,'111');
-                                    $content="您好!感谢您的关注";
-                                }else{
-                                 $content="感谢您的再次关注";
-                                }
+//                                if(!Redis::get($openid)){
+//                                    Redis::set($openid,'111');
+//                                    $content="您好!感谢您的关注";
+//                                }else{
+//                                 $content="感谢您的再次关注";
+//                                }
+                                //查数据库有这个用户没有
+                            $user_id=UserModel::where('openid',$openid)->first();
+                            if($user_id){
+                                $user_id->subscribe=1;
+                                $user_id->save();
+                                $content="谢谢回来！";
+                            }else{
+                                $res=[
+                                    "subscribe" => $user['subscribe'],
+                                    "openid" => $user["openid"],
+                                    "nickname" => $user["nickname"],
+                                    "sex" => $user["sex"],
+                                    "city" => $user["city"],
+                                    "country" => $user["country"],
+                                    "province" => $user["province"],
+                                    "language" => $user["language"],
+                                    "headimgurl" => $user["headimgurl"],
+                                    "subscribe_time" => $user["subscribe_time"],
+                                    "subscribe_scene" => $user["subscribe_scene"]
+                                ];
+                                UserModel::create($res);
+                                $content="谢谢关注@！";
+                            }
+
+
                             echo $this->xiaoxi($obj,$content);
                         }
                     }
@@ -162,5 +188,14 @@ class TestController extends Controller
         //替换掉上面的参数用 sprintf
         echo sprintf($xml,$toUserName,$fromUserName,$time,$msgType,$content);
 
+    }
+
+
+
+    public function test2(){
+        echo '<pre>';print_r($_POST);echo '</pre>';
+
+        $data=file_get_contents("php://input");
+        echo $data;
     }
 }

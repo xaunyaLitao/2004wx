@@ -21,3 +21,6 @@ Route::any('/info',function(){
 
 Route::any('/weixin',"TestController@test1");  //接收事件推送
 Route::any('/token',"TestController@getAccessToken");
+
+Route::post('/test2',"TestController@test2");
+
