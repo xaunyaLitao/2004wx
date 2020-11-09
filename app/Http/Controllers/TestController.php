@@ -118,6 +118,7 @@ class TestController extends Controller
                             "url"=>$obj->PicUrl
                         ];
                         ImageModel::insert($data);
+                        echo $this->xiaoxi($obj,$content);
                         break;
                 }
 
