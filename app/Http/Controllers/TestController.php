@@ -28,7 +28,8 @@ class TestController extends Controller
                         $access_token=$this->get_access_token();//获取token,
                         $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
                         //掉接口
-                        $user=json_decode($this->http_get($url),true);//跳方法 用get  方式调第三方类库
+                        $user=file_get_contents($url);
+                        $user=json_decode($user,true);//跳方法 用get  方式调第三方类库
                         // $this->writeLog($fens);
                         if(isset($user["errcode"])){
                             $this->writeLog("获取用户信息失败");
@@ -45,7 +46,7 @@ class TestController extends Controller
                             if($user_id){
                                 $user_id->subscribe=1;
                                 $user_id->save();
-                                $content="谢谢回来！";
+                                $content="谢谢再次回来！";
                             }else{
                                 $res=[
                                     "subscribe" => $user['subscribe'],
@@ -60,14 +61,17 @@ class TestController extends Controller
                                     "subscribe_time" => $user["subscribe_time"],
                                     "subscribe_scene" => $user["subscribe_scene"]
                                 ];
-                                UserModel::create($res);
+                                UserModel::insert($res);
                                 $content="谢谢关注@！";
                             }
-
-
-                            echo $this->xiaoxi($obj,$content);
                         }
                     }
+                if($obj->Event=="unsubscribe"){
+                    $user_id->subscribe=0;
+                    $user_id->save();
+                }
+
+            echo $this->xiaoxi($obj,$content);
         }
     }
 
