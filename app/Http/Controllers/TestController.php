@@ -7,6 +7,7 @@ use DB;
 use Log;
 use Illuminate\Support\Facades\Redis;
 use App\Model\UserModel;
+use App\Model\ImageModel;
 use GuzzleHttp\Client;
 class TestController extends Controller
 {
@@ -37,6 +38,7 @@ class TestController extends Controller
                 if(isset($user["errcode"])){
                 $this->writeLog("获取用户信息失败");
                 }else{
+
                 //说明查找成功 //可以加入数据库
 //                                if(!Redis::get($openid)){
 //                                    Redis::set($openid,'111');
@@ -44,6 +46,7 @@ class TestController extends Controller
 //                                }else{
 //                                 $content="感谢您的再次关注";
 //                                }
+
                 //查数据库有这个用户没有
                 $user_id=UserModel::where('openid',$openid)->first();
                 if($user_id){
@@ -76,6 +79,7 @@ class TestController extends Controller
             }
             echo $this->xiaoxi($obj,$content);
             break;
+
                     case "text":
                         //  天气
                         $city=urlencode(str_replace("天气:","",$obj->Content));   //城市
@@ -84,7 +88,7 @@ class TestController extends Controller
                         $shuju=file_get_contents($url);
                         $shuju=json_decode($shuju,true);
                         if($shuju["error_code"]==0){
-                            $today=$shuju["result"]["realtime"];  //
+                            $today=$shuju["result"]["realtime"];
                             $content="查询天气的城市:".$shuju["result"]["city"]."当天天气"."/n";  //查询的城市
                             $content.="天气详细情况：".$today["info"];
                             $content.="温度：".$today["temperature"]."\n";
@@ -98,7 +102,7 @@ class TestController extends Controller
                                 $content.="日期:".date("Y-m-d",strtotime($v["date"])).$v['temperature'].",";
                                 $content.="天气:".$v['weather']."\n";
                             }
-//                echo $this->xiaoxi($obj,$content);
+
                         }else{
                             $content="你的查询天气失败，你的格式是天气:城市,这个城市不属于中国";
                         }
@@ -106,6 +110,15 @@ class TestController extends Controller
                         echo $this->xiaoxi($obj,$content);
                         break;
 
+
+                    case "图片";
+                        $data=[
+                          "openid"=>$obj->FromUserName,
+                            "images"=>$str,
+                            "url"=>$obj->PicUrl
+                        ];
+                        ImageModel::insert($data);
+                        break;
                 }
 
         }
