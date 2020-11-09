@@ -7,6 +7,7 @@ use DB;
 use Log;
 use Illuminate\Support\Facades\Redis;
 use App\Model\UserModel;
+use Facade\FlareClient\Http\Client;
 class TestController extends Controller
 {
     public function test1(){
@@ -71,6 +72,10 @@ class TestController extends Controller
                     $user_id->subscribe=0;
                     $user_id->save();
                 }
+
+            //  天气
+            $url="";
+
 
             echo $this->xiaoxi($obj,$content);
         }
@@ -158,4 +163,5 @@ class TestController extends Controller
         $data=file_get_contents("php://input");
         echo $data;
     }
+    
 }
