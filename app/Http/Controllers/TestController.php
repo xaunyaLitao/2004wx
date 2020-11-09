@@ -22,84 +22,92 @@ class TestController extends Controller
             // $obj=json_decode($obj, true);
             // file_put_contents("aaa.txt",$obj);
             // echo "ok";
-
-                    if($obj->Event=="subscribe"){
-                        //用户扫码的 openID
-                        $openid=$obj->FromUserName;//获取发送方的 openid
-                        $access_token=$this->get_access_token();//获取token,
-                        $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
-                        //掉接口
-                        $user=file_get_contents($url);
-                        $user=json_decode($user,true);//跳方法 用get  方式调第三方类库
-                        // $this->writeLog($fens);
-                        if(isset($user["errcode"])){
-                            $this->writeLog("获取用户信息失败");
-                        }else{
-                            //说明查找成功 //可以加入数据库
+                switch($obj->MsgType){
+                    //  关注
+                    case "event":
+                if($obj->Event=="subscribe"){
+                    //用户扫码的 openID
+                $openid=$obj->FromUserName;//获取发送方的 openid
+                $access_token=$this->get_access_token();//获取token,
+                $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
+                    //掉接口
+                $user=file_get_contents($url);
+                $user=json_decode($user,true);//跳方法 用get  方式调第三方类库
+                    // $this->writeLog($fens);
+                if(isset($user["errcode"])){
+                $this->writeLog("获取用户信息失败");
+                }else{
+                //说明查找成功 //可以加入数据库
 //                                if(!Redis::get($openid)){
 //                                    Redis::set($openid,'111');
 //                                    $content="您好!感谢您的关注";
 //                                }else{
 //                                 $content="感谢您的再次关注";
 //                                }
-                                //查数据库有这个用户没有
-                            $user_id=UserModel::where('openid',$openid)->first();
-                            if($user_id){
-                                $user_id->subscribe=1;
-                                $user_id->save();
-                                $content="谢谢再次回来！";
-                            }else{
-                                $res=[
-                                    "subscribe" => $user['subscribe'],
-                                    "openid" => $user["openid"],
-                                    "nickname" => $user["nickname"],
-                                    "sex" => $user["sex"],
-                                    "city" => $user["city"],
-                                    "country" => $user["country"],
-                                    "province" => $user["province"],
-                                    "language" => $user["language"],
-                                    "headimgurl" => $user["headimgurl"],
-                                    "subscribe_time" => $user["subscribe_time"],
-                                    "subscribe_scene" => $user["subscribe_scene"]
-                                ];
-                                UserModel::insert($res);
-                                $content="谢谢关注@！";
-                            }
-                        }
-                    }
-                // 取消关注
-                if($obj->Event=="unsubscribe"){
-                    $user_id->subscribe=0;
+                //查数据库有这个用户没有
+                $user_id=UserModel::where('openid',$openid)->first();
+                if($user_id){
+                    $user_id->subscribe=1;
                     $user_id->save();
+                    $content="谢谢再次回来！";
+                }else{
+                    $res=[
+                        "subscribe" => $user['subscribe'],
+                        "openid" => $user["openid"],
+                        "nickname" => $user["nickname"],
+                        "sex" => $user["sex"],
+                        "city" => $user["city"],
+                        "country" => $user["country"],
+                        "province" => $user["province"],
+                        "language" => $user["language"],
+                        "headimgurl" => $user["headimgurl"],
+                        "subscribe_time" => $user["subscribe_time"],
+                        "subscribe_scene" => $user["subscribe_scene"]
+                    ];
+                    UserModel::insert($res);
+                    $content="谢谢关注@！";
                 }
-
-            //  天气
-            $city=urlencode(str_replace("天气:","",$obj->Content));   //城市
-            $key="50ad65400349c7a71553ab6b23b92acb";  //key
-            $url="http://apis.juhe.cn/simpleWeather/query?city=".$city."&key=".$key;  //url地址
-            $shuju=file_get_contents($url);
-            $shuju=json_decode($shuju,true);
-            if($shuju["error_code"]==0){
-                $today=$shuju["result"]["realtime"];  //
-                $content="查询天气的城市:".$shuju["result"]["city"]."当天天气"."/n";  //查询的城市
-                $content.="天气详细情况：".$today["info"];
-                $content.="温度：".$today["temperature"]."\n";
-                $content.="湿度：".$today["humidity"]."\n";
-                $content.="风向：".$today["direct"]."\n";
-                $content.="风力：".$today["power"]."\n";
-                $content.="空气质量指数：".$today["aqi"]."\n";
-                //获取一个星期的
-                $future=$shuju["result"]["future"];
-                foreach($future as $k=>$v){
-                    $content.="日期:".date("Y-m-d",strtotime($v["date"])).$v['temperature'].",";
-                    $content.="天气:".$v['weather']."\n";
-                }
-//                echo $this->xiaoxi($obj,$content);
-            }else{
-                $content="你的查询天气失败，你的格式是天气:城市,这个城市不属于中国";
             }
-
+        }
+            // 取消关注
+            if($obj->Event=="unsubscribe"){
+                $user_id->subscribe=0;
+                $user_id->save();
+            }
             echo $this->xiaoxi($obj,$content);
+            break;
+                    case "text":
+                        //  天气
+                        $city=urlencode(str_replace("天气:","",$obj->Content));   //城市
+                        $key="50ad65400349c7a71553ab6b23b92acb";  //key
+                        $url="http://apis.juhe.cn/simpleWeather/query?city=".$city."&key=".$key;  //url地址
+                        $shuju=file_get_contents($url);
+                        $shuju=json_decode($shuju,true);
+                        if($shuju["error_code"]==0){
+                            $today=$shuju["result"]["realtime"];  //
+                            $content="查询天气的城市:".$shuju["result"]["city"]."当天天气"."/n";  //查询的城市
+                            $content.="天气详细情况：".$today["info"];
+                            $content.="温度：".$today["temperature"]."\n";
+                            $content.="湿度：".$today["humidity"]."\n";
+                            $content.="风向：".$today["direct"]."\n";
+                            $content.="风力：".$today["power"]."\n";
+                            $content.="空气质量指数：".$today["aqi"]."\n";
+                            //获取一个星期的
+                            $future=$shuju["result"]["future"];
+                            foreach($future as $k=>$v){
+                                $content.="日期:".date("Y-m-d",strtotime($v["date"])).$v['temperature'].",";
+                                $content.="天气:".$v['weather']."\n";
+                            }
+//                echo $this->xiaoxi($obj,$content);
+                        }else{
+                            $content="你的查询天气失败，你的格式是天气:城市,这个城市不属于中国";
+                        }
+
+                        echo $this->xiaoxi($obj,$content);
+                        break;
+
+                }
+
         }
     }
 
