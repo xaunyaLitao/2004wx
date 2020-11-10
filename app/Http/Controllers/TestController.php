@@ -147,6 +147,16 @@ class TestController extends Controller
     }
 
 
+
+
+    private function writeLog($data){
+        if(is_object($data) || is_array($data)){   //不管是数据和对象都转json 格式
+            $data=json_encode($data);
+        }
+        file_put_contents('2004.txt',$data);die;
+    }
+
+
 //   获取access_token
     public function getAccessToken(){
         $key="1234";

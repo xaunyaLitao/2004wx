@@ -1,0 +1,13 @@
+<xml><ToUserName><![CDATA[gh_f652006ce463]]></ToUserName>
+<FromUserName><![CDATA[oc3dpwjYlt0VnkEymHUuCozdllIU]]></FromUserName>
+<CreateTime>1604974965</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[subscribe]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml><xml><ToUserName><![CDATA[gh_f652006ce463]]></ToUserName>
+<FromUserName><![CDATA[oc3dpwjYlt0VnkEymHUuCozdllIU]]></FromUserName>
+<CreateTime>1604974965</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[subscribe]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml>
