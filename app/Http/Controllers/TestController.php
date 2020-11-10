@@ -11,6 +11,7 @@ use App\Model\ImageModel;
 use GuzzleHttp\Client;
 class TestController extends Controller
 {
+//    事件推送
     public function test1(){
         $echostr = request()->get("echostr", "");
         if ($this->checkSignature() && !empty($echostr)) {
@@ -23,13 +24,14 @@ class TestController extends Controller
             // $obj=json_decode($obj, true);
             // file_put_contents("aaa.txt",$obj);
             // echo "ok";
+            file_put_contents('wx_event.txt',$str);
                 switch($obj->MsgType){
                     //  关注
                     case "event":
                 if($obj->Event=="subscribe"){
                     //用户扫码的 openID
                 $openid=$obj->FromUserName;//获取发送方的 openid
-                $access_token=$this->get_access_token();//获取token,
+                $access_token=$this->get_access_token();//获取token
                 $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN";
                     //掉接口
                 $user=file_get_contents($url);
