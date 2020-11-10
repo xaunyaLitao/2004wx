@@ -24,7 +24,7 @@ class TestController extends Controller
             // $obj=json_decode($obj, true);
             // file_put_contents("aaa.txt",$obj);
             // echo "ok";
-            file_put_contents('wx_event.txt',$str,FILE_APPEND);
+            file_put_contents('wx_event.log',$str,FILE_APPEND);
                 switch($obj->MsgType){
                     //  关注
                     case "event":
