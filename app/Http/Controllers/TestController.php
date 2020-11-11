@@ -131,7 +131,7 @@ class TestController extends Controller
 
                     //   语音
                     case "voice";
-                        file_put_contents("2004.txt",$str);
+//                        file_put_contents("2004.txt",$str);
                         $data=[
                             'tousername'=>$obj->ToUserName,
                             'openid'=>$obj->FromUserName,
@@ -141,6 +141,20 @@ class TestController extends Controller
                             'media_id'=>$obj->MediaId
                         ];
                         HistoryModel::insert($data);
+                        break;
+
+                    case "video";
+                        $data=[
+                            'tousername'=>$obj->ToUserName,
+                            'openid'=>$obj->FromUserName,
+                            'createtime'=>$obj->CreateTime,
+                            'msgtype'=>$obj->MsgType,
+                            'thumbmediaId'=>$obj->thumbmediaId,
+                            'msgid'=>$obj->MsgId,
+                            'media_id'=>$obj->MediaId
+                        ];
+                        HistoryModel::insert($data);
+
                         break;
                       }
 
