@@ -154,7 +154,7 @@ class TestController extends Controller
                         $url="https://api.weixin.qq.com/cgi-bin/media/get/jssdk?access_token=".$token."&media_id=".$media_id;
                         $voice = file_get_contents($url);
                         file_put_contents("la.amr",$voice);
-
+                         $content = "正确";
                         break;
 
                     //  视频
