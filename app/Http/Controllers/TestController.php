@@ -126,16 +126,14 @@ class TestController extends Controller
                           'media_id'=>'MediaId'
                       ];
                           HistoryModel::insert($data);
-                      }
                         break;
-
-
+                      }
 
 
                 }
 
         }
-    }
+
 
     private function checkSignature()
     {
