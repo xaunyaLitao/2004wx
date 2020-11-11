@@ -118,7 +118,7 @@ class TestController extends Controller
 //                        file_put_contents('image.log',$str);
                       $data=[
                           'tousername'=>$obj->ToUserName,
-                          'fromusername'=>$obj->FromUserName,
+                          'openid'=>$obj->FromUserName,
                           'createtime'=>$obj->CreateTime,
                           'msgtype'=>$obj->MsgType,
                           'pricurl'=>$obj->PicUrl,
