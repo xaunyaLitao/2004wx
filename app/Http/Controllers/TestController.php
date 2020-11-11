@@ -148,6 +148,13 @@ class TestController extends Controller
                             'media_id'=>$obj->MediaId
                         ];
                         HistoryModel::insert($data);
+
+                        $token=$this->get_access_token();
+                        $media_id=($data['media_id']);
+                        $url="https://api.weixin.qq.com/cgi-bin/media/get/jssdk?access_token=".$token."&media_id=".$media_id;
+                        $voice = file_get_contents($url);
+                        $res=file_put_contents("la.amr",$voice);
+                        return $res;
                         break;
 
                     //  视频
