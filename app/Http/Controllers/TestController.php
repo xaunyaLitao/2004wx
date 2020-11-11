@@ -19,7 +19,6 @@ class TestController extends Controller
             //第一次接入
             echo $echostr;
         }else{
-            $content=改功能还未实现;
             // $access_token=$this->get_access_token();  //跳方法  调 access_token  获取access_token
             $str=file_get_contents("php://input");
             $obj = simplexml_load_string($str,"SimpleXMLElement",LIBXML_NOCDATA);
