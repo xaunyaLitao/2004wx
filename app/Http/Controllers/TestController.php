@@ -114,6 +114,7 @@ class TestController extends Controller
                         break;
 
 
+                    //    图片
                     case "image";
 //                        file_put_contents('image.log',$str);
                       $data=[
@@ -126,6 +127,20 @@ class TestController extends Controller
                           'media_id'=>$obj->MediaId
                       ];
                           HistoryModel::insert($data);
+                        break;
+
+                    //   语音
+                    case "voice";
+                        file_put_contents("2004.txt",$str);
+                        $data=[
+                            'tousername'=>$obj->ToUserName,
+                            'openid'=>$obj->FromUserName,
+                            'createtime'=>$obj->CreateTime,
+                            'msgtype'=>$obj->MsgType,
+                            'msgid'=>$obj->MsgId,
+                            'media_id'=>$obj->MediaId
+                        ];
+                        HistoryModel::insert($data);
                         break;
                       }
 
@@ -267,6 +282,8 @@ class TestController extends Controller
         $data=$response->getBody();
         echo $data;
     }
+
+
 
 
 //    文本

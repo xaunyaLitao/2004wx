@@ -50,11 +50,12 @@ class WxController extends Controller
     public function test1(){
         $xml="<xml><ToUserName><![CDATA[gh_f652006ce463]]></ToUserName>
 <FromUserName><![CDATA[oc3dpwjYlt0VnkEymHUuCozdllIU]]></FromUserName>
-<CreateTime>1605003147</CreateTime>
-<MsgType><![CDATA[image]]></MsgType>
-<PicUrl><![CDATA[http://mmbiz.qpic.cn/mmbiz_jpg/TJhU9PFibVQdzWcNN1eGlqmibQeLbMWIOzgjOSpbRmhDE3BAKrqm0m4DFViab2lwhztFicOPeVQ1Luy3uicd7DiaDk7w/0]]></PicUrl>
-<MsgId>22978119963270840</MsgId>
-<MediaId><![CDATA[oUhvt_GeEkLFrp-kmvs5Gw-WYsD65ClH2OF9L-C9dIBWbcytHczNV1dmRnDKGefe]]></MediaId>
+<CreateTime>1605060305</CreateTime>
+<MsgType><![CDATA[voice]]></MsgType>
+<MediaId><![CDATA[GTpS6kFK6Z6CBFI2tBWeVxuKkZ4Vs2EmSdravqwcQzsSKczXjG_6wUHwVImObfI9]]></MediaId>
+<Format><![CDATA[amr]]></Format>
+<MsgId>22978942147288014</MsgId>
+<Recognition><![CDATA[]]></Recognition>
 </xml>";
         $obj = simplexml_load_string($xml,"SimpleXMLElement",LIBXML_NOCDATA);
         dd($obj);
