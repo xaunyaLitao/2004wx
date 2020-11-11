@@ -126,6 +126,15 @@ class TestController extends Controller
                           'msgid'=>$obj->MsgId,
                           'media_id'=>$obj->MediaId
                       ];
+                      $token=$this->get_access_token();
+                        $media_id=($data['media_id']);
+                        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=".$media_id;
+                        $img = file_get_contents($url);
+                        $res=file_put_contents("cat.jpg",$img);
+                        var_dump($res);
+
+
+
                           HistoryModel::insert($data);
                         break;
 
@@ -151,21 +160,6 @@ class TestController extends Controller
                             'createtime'=>$obj->CreateTime,
                             'msgtype'=>$obj->MsgType,
                             'thumbmediaId'=>$obj->thumbmediaId,
-                            'msgid'=>$obj->MsgId,
-                            'media_id'=>$obj->MediaId
-                        ];
-                        HistoryModel::insert($data);
-
-                        break;
-
-                        // 文本
-                    case "text";
-                        $data=[
-                            'tousername'=>$obj->ToUserName,
-                            'openid'=>$obj->FromUserName,
-                            'createtime'=>$obj->CreateTime,
-                            'msgtype'=>$obj->MsgType,
-                            'content'=>$obj->Content,
                             'msgid'=>$obj->MsgId,
                             'media_id'=>$obj->MediaId
                         ];

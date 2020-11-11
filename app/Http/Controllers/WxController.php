@@ -60,4 +60,6 @@ class WxController extends Controller
         $obj = simplexml_load_string($xml,"SimpleXMLElement",LIBXML_NOCDATA);
         dd($obj);
     }
+
+
 }
