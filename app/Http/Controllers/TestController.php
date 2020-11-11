@@ -131,7 +131,7 @@ class TestController extends Controller
                         $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=".$media_id;
                         $img = file_get_contents($url);
                         $res=file_put_contents("cat.jpg",$img);
-                        var_dump($res);
+                        return $res;
 
 
 
