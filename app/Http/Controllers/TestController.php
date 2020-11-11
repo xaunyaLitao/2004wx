@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redis;
 use App\Model\UserModel;
 use App\Model\ImageModel;
 use GuzzleHttp\Client;
+use App\Model\HistoryModel;
 class TestController extends Controller
 {
 //    事件推送
@@ -113,15 +114,24 @@ class TestController extends Controller
                         break;
 
 
-                    case "图片";
-                        $data=[
-                          "openid"=>$obj->FromUserName,
-                            "images"=>$str,
-                            "url"=>$obj->PicUrl
-                        ];
-                        ImageModel::insert($data);
-                        echo $this->xiaoxi($obj,$content);
+                    case "image";
+//                        file_put_contents('image.log',$str);
+                      $data=[
+                          'tousername'=>'ToUserName',
+                          'fromusername'=>'FromUserName',
+                          'createtime'=>'CreateTime',
+                          'msgtype'=>'MsgType',
+                          'pricurl'=>'PicUrl',
+                          'msgid'=>'MsgId',
+                          'media_id'=>'MediaId'
+                      ];
+                          HistoryModel::insert($data);
+                      }
                         break;
+
+
+
+
                 }
 
         }
@@ -259,4 +269,114 @@ class TestController extends Controller
         $data=$response->getBody();
         echo $data;
     }
+
+
+//    文本
+//private function text($toUser,$fromUser,$content){
+//    $template="<xml>
+//  <ToUserName><![CDATA[%s]]></ToUserName>
+//  <FromUserName><![CDATA[%s]]></FromUserName>
+//  <CreateTime>%s</CreateTime>
+//  <MsgType><![CDATA[%s]]></MsgType>
+//  <Content><![CDATA[%s]]></Content>
+//</xml>";
+//    $info=sprintf($template,$toUser,$fromUser,time(),'text',$content);
+//    return $info;
+//}
+
+
+//    图片
+//private function image($toUser,$fromUser,$content)
+//{
+//    $template="<xml>
+//  <ToUserName><![CDATA[%s]]></ToUserName>
+//  <FromUserName><![CDATA[%s]]></FromUserName>
+//  <CreateTime>%s</CreateTime>
+//  <MsgType><![CDATA[%s]]></MsgType>
+//  <Image>
+//  <MediaId><![CDATA[%s]]></MediaId>
+//  </Image>
+//</xml>";
+//    $info=sprintf($template,$toUser,$fromUser,time(),'image',$content);
+//    return $info;
+//}
+
+
+//  语音
+//private function voice($toUser,$fromUser,$content){
+//    $template="<xml>
+//  <ToUserName><![CDATA[%s]]></ToUserName>
+//  <FromUserName><![CDATA[%s]]></FromUserName>
+//  <CreateTime>%s</CreateTime>
+//  <MsgType><![CDATA[%s]]></MsgType>
+//  <Voice>
+//  <MediaId><![CDATA[%s]]></MediaId>
+//  </Voice>
+//</xml>";
+//    $info=sprintf($template,$toUser,$fromUser,time(),'voice',$content);
+//    return $info;
+//}
+
+
+
+//    视频
+
+//private function video($toUser,$fromUser,$content,$title,$description){
+//    $template = "<xml>
+//                              <ToUserName><![CDATA[%s]]></ToUserName>
+//                              <FromUserName><![CDATA[%s]]></FromUserName>
+//                              <CreateTime><![CDATA[%s]]></CreateTime>
+//                              <MsgType><![CDATA[%s]]></MsgType>
+//                              <Video>
+//                                <MediaId><![CDATA[%s]]></MediaId>
+//                                <Title><![CDATA[%s]]></Title>
+//                                <Description><![CDATA[%s]]></Description>
+//                              </Video>
+//                            </xml>";
+//    $info=sprintf($template,$toUser,$fromUser,time(),'video',$content,$title,$description);
+//    return $info;
+//}
+
+//  音乐
+//    private function music($toUser,$fromUser,$title,$description,$musicurl,$content)
+//    {
+//        $template = "<xml>
+//                  <ToUserName><![CDATA[%s]]></ToUserName>
+//                  <FromUserName><![CDATA[%s]]></FromUserName>
+//                  <CreateTime><![CDATA[%s]]></CreateTime>
+//                  <MsgType><![CDATA[%s]]></MsgType>
+//                  <Music>
+//                    <Title><![CDATA[%s]]></Title>
+//                    <Description><![CDATA[%s]]></Description>
+//                    <MusicUrl><![CDATA[%s]]></MusicUrl>
+//                    <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
+//                    <ThumbMediaId><![CDATA[%s]]></ThumbMediaId>
+//                  </Music>
+//                </xml>";
+//        $info = sprintf($template, $toUser, $fromUser, time(), 'music', $title,$description,$musicurl,$musicurl,$content);
+//        return $info;
+//    }
+
+// 图文
+//    private function image_text($toUser,$fromUser,$title,$description,$content,$url){
+//        $template = "<xml>
+//                              <ToUserName><![CDATA[%s]]></ToUserName>
+//                              <FromUserName><![CDATA[%s]]></FromUserName>
+//                              <CreateTime>%s</CreateTime>
+//                              <MsgType><![CDATA[%s]]></MsgType>
+//                              <ArticleCount><![CDATA[%s]]></ArticleCount>
+//                              <Articles>
+//                                <item>
+//                                  <Title><![CDATA[%s]]></Title>
+//                                  <Description><![CDATA[%s]]></Description>
+//                                  <PicUrl><![CDATA[%s]]></PicUrl>
+//                                  <Url><![CDATA[%s]]></Url>
+//                                </item>
+//                              </Articles>
+//                            </xml>";
+//        $info = sprintf($template, $toUser, $fromUser, time(), 'news', 1 ,$title,$description,$content,$url);
+//        return $info;
+//    }
+
+
 }

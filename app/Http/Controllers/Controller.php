@@ -65,4 +65,6 @@ class Controller extends BaseController
         //file_put_contents("text.txt",$result);//调试
 
     }
+
+
 }
