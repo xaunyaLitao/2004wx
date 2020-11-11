@@ -143,6 +143,7 @@ class TestController extends Controller
                         HistoryModel::insert($data);
                         break;
 
+                    //  视频
                     case "video";
                         $data=[
                             'tousername'=>$obj->ToUserName,
@@ -150,6 +151,21 @@ class TestController extends Controller
                             'createtime'=>$obj->CreateTime,
                             'msgtype'=>$obj->MsgType,
                             'thumbmediaId'=>$obj->thumbmediaId,
+                            'msgid'=>$obj->MsgId,
+                            'media_id'=>$obj->MediaId
+                        ];
+                        HistoryModel::insert($data);
+
+                        break;
+
+                        // 文本
+                    case "text";
+                        $data=[
+                            'tousername'=>$obj->ToUserName,
+                            'openid'=>$obj->FromUserName,
+                            'createtime'=>$obj->CreateTime,
+                            'msgtype'=>$obj->MsgType,
+                            'content'=>$obj->Content,
                             'msgid'=>$obj->MsgId,
                             'media_id'=>$obj->MediaId
                         ];
