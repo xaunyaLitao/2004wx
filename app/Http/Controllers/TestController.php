@@ -117,13 +117,13 @@ class TestController extends Controller
                     case "image";
 //                        file_put_contents('image.log',$str);
                       $data=[
-                          'tousername'=>'ToUserName',
-                          'fromusername'=>'FromUserName',
-                          'createtime'=>'CreateTime',
-                          'msgtype'=>'MsgType',
-                          'pricurl'=>'PicUrl',
-                          'msgid'=>'MsgId',
-                          'media_id'=>'MediaId'
+                          'tousername'=>$obj->ToUserName,
+                          'fromusername'=>$obj->FromUserName,
+                          'createtime'=>$obj->CreateTime,
+                          'msgtype'=>$obj->MsgType,
+                          'pricurl'=>$obj->PicUrl,
+                          'msgid'=>$obj->MsgId,
+                          'media_id'=>$obj->MediaId
                       ];
                           HistoryModel::insert($data);
                         break;
