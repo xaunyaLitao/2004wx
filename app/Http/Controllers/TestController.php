@@ -42,6 +42,32 @@ class TestController extends Controller
                 $this->writeLog("获取用户信息失败");
                 }else{
 
+                    if($obj->Event=="CLICK"){
+                        if($obj->EventKey=="Li"){
+                            $key = $obj->FromUserName;
+                            $times = date("Y-m-d",time());
+                            $date = Redis::zrange($key,0,-1);
+                            if($date){
+                                $date = $date[0];
+                            }
+
+                            if($date==$times){
+                                $content = "您今日已经签到过了!";
+                            }else{
+                                $zcard = Redis::zcard($key);
+                                if($zcard>=1){
+                                    Redis::zremrangebyrank($key,0,0);
+                                }
+                                $keys = array_xml($str);
+                                $keys = $keys['FromUserName'];
+                                $zincrby = Redis::zincrby($key,1,$keys);
+                                $zadd = Redis::zadd($key,$zincrby,$times);
+
+                                $score = Redis::incrby($keys."_score",100);
+
+                                $content="签到成功您以积累签到".$zincrby."天!"."您以积累获得".$score."积分";
+                            }
+                    }
                 //说明查找成功 //可以加入数据库
 //                                if(!Redis::get($openid)){
 //                                    Redis::set($openid,'111');
@@ -83,7 +109,7 @@ class TestController extends Controller
             echo $this->xiaoxi($obj,$content);
             break;
 
-                    case "text":
+                    case "text";
                         //  天气
                         $city=urlencode(str_replace("天气:","",$obj->Content));   //城市
                         $key="50ad65400349c7a71553ab6b23b92acb";  //key

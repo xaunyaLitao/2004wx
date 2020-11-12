@@ -31,7 +31,13 @@ class WxController extends Controller
                     'type'  =>'view',
                     'name'  =>'京东',
                     'url'   =>'https://www.jd.com'
-                ]
+                ],
+                    [
+                        'type'  =>'click',
+                        'name'  =>'签到',
+                        'key'   =>'Li'
+
+                    ]
                 ]
             ]
         ];

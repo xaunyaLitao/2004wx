@@ -29,6 +29,7 @@ Route::prefix('/test')->group(function(){
     Route::get('/guzzle2',"TestController@guzzle2");
 });
 
+
 Route::prefix('/wx')->group(function(){
     Route::any('/token',"WxController@getAccessToken");
     Route::any('/create_menu',"WxController@createMenu");
