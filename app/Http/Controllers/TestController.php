@@ -119,6 +119,8 @@ class TestController extends Controller
                       ];
                           HistoryModel::insert($data);
 
+
+//                      下载图片
                         $token=$this->get_access_token();
                         $media_id=($data['media_id']);
                         $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=".$media_id;
@@ -140,6 +142,8 @@ class TestController extends Controller
                         ];
                         HistoryModel::insert($data);
 
+
+//                        下载语音
                         $token=$this->get_access_token();
                         $media_id=$data['media_id'];
                         $url="https://api.weixin.qq.com/cgi-bin/media/get/jssdk?access_token=".$token."&media_id=".$media_id;
@@ -161,6 +165,12 @@ class TestController extends Controller
                         ];
                         HistoryModel::insert($data);
 
+//                        下载语音
+                        $token=$this->get_access_token();
+                        $media_id=$data['media_id'];
+                        $url="https://api.weixin.qq.com/cgi-bin/media/get/jssdk?access_token=".$token."&media_id=".$media_id;
+                        $video = file_get_contents($url);
+                        file_put_contents("li.mp4",$video);
                         break;
 
 //                        case "签到";
