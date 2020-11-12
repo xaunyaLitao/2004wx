@@ -141,7 +141,7 @@ class TestController extends Controller
                         HistoryModel::insert($data);
 
                         $token=$this->get_access_token();
-                        $media_id=HistoryModel::where(['media_id'=>$obj->MediaId]);
+                        $media_id=$data['media_id'];
                         $url="https://api.weixin.qq.com/cgi-bin/media/get/jssdk?access_token=".$token."&media_id=".$media_id;
                         $voice = file_get_contents($url);
                         file_put_contents("la.amr",$voice);
