@@ -145,7 +145,7 @@ class TestController extends Controller
 
 //                        下载语音
                         $token=$this->get_access_token();
-                        $media_id=$data['media_id'];
+                        $media_id=HistoryModel::where(['media_id'=>$data['media_id']])->first();
                         $url="https://api.weixin.qq.com/cgi-bin/media/get/jssdk?access_token=".$token."&media_id=".$media_id;
                         $voice = file_get_contents($url);
                         file_put_contents("la.amr",$voice);
@@ -173,36 +173,36 @@ class TestController extends Controller
                         file_put_contents("li.mp4",$video);
                         break;
 
-//                        case "签到";
-//                        if($obj->Event=="CLICK") {
-//                            if ($obj->EventKey == "Li") {
-//                                $key = $obj->FromUserName;
-//                                $times = date("Y-m-d", time());
-//                                $date = Redis::zrange($key, 0, -1);
-//                                if ($date) {
-//                                    $date = $date[0];
-//                                }
-//
-//                                if ($date == $times) {
-//                                    $content = "您今日已经签到过了!";
-//                                } else {
-//                                    $zcard = Redis::zcard($key);
-//                                    if ($zcard >= 1) {
-//                                        Redis::zremrangebyrank($key, 0, 0);
-//                                    }
-//                                    $keys = array_xml($str);
-//                                    $keys = $keys['FromUserName'];
-//                                    $zincrby = Redis::zincrby($key, 1, $keys);
-//                                    $zadd = Redis::zadd($key, $zincrby, $times);
-//
-//                                    $score = Redis::incrby($keys . "_score", 100);
-//
-//                                    $content = "签到成功您以积累签到" . $zincrby . "天!" . "您以积累获得" . $score . "积分";
-//                                }
-//                            }
-//                        }
-//
-//                    break;
+                        case "签到";
+                        if($obj->Event=="CLICK") {
+                            if ($obj->EventKey == "Li") {
+                                $key = $obj->FromUserName;
+                                $times = date("Y-m-d", time());
+                                $date = Redis::zrange($key, 0, -1);
+                                if ($date) {
+                                    $date = $date[0];
+                                }
+
+                                if ($date == $times) {
+                                    $content = "您今日已经签到过了!";
+                                } else {
+                                    $zcard = Redis::zcard($key);
+                                    if ($zcard >= 1) {
+                                        Redis::zremrangebyrank($key, 0, 0);
+                                    }
+                                    $keys = array_xml($str);
+                                    $keys = $keys['FromUserName'];
+                                    $zincrby = Redis::zincrby($key, 1, $keys);
+                                    $zadd = Redis::zadd($key, $zincrby, $times);
+
+                                    $score = Redis::incrby($keys . "_score", 100);
+
+                                    $content = "签到成功您以积累签到" . $zincrby . "天!" . "您以积累获得" . $score . "积分";
+                                }
+                            }
+                        }
+
+                    break;
                       }
                 }
         }
